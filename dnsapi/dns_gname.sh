@@ -54,8 +54,8 @@ dns_gname_add() {
     return 0
   else
     if _contains "$post_response" "the same host records and record values"; then
-       _info "Successfully DNS record already exists."
-       return 0
+      _info "Successfully DNS record already exists."
+      return 0
     fi
     _err "Failed to add DNS record via Gname API."
     return 1
@@ -97,7 +97,7 @@ dns_gname_rm() {
     return 1
   fi
 
-  _debug "DNS record ID:$record_id";
+  _debug "DNS record ID:$record_id"
   gntime=$(date +%s)
   body="appid=$GNAME_APPID&gntime=$gntime&jxid=$record_id&lang=us&ym=$ext_domain"
 
@@ -167,8 +167,8 @@ _post_to_api() {
 
   curl_err_code=$?
   if [ "$curl_err_code" != "0" ]; then
-     _err "POST API $url curl error:$curl_err_code"
-     return 1
+    _err "POST API $url curl error:$curl_err_code"
+    return 1
   fi
 
   ret_code=$(echo "$post_response" | sed 's/.*"code":\([-0-9]*\).*/\1/')
@@ -208,37 +208,37 @@ _extract_domain() {
     ext_hostname=""
     ext_domain="$host"
 
-    elif [ "$dot_count" -gt 1 ]; then
-      matched_suffix=""
-      for suffix in $suffix_list; do
-        case "$host" in
-          *".$suffix")
-            if [ -z "$matched_suffix" ] || [ "${#suffix}" -gt "${#matched_suffix}" ]; then
-              matched_suffix="$suffix"
-            fi
-            ;;
-        esac
-        done
-
-        if [ -n "$matched_suffix" ]; then
-          prefix="${host%."$matched_suffix"}"
-          main_name="${prefix##*.}"
-
-          ext_domain="$main_name.$matched_suffix"
-
-          if [ "$host" = "$ext_domain" ]; then
-            ext_hostname=""
-          else
-            ext_hostname="${host%."$ext_domain"}"
+  elif [ "$dot_count" -gt 1 ]; then
+    matched_suffix=""
+    for suffix in $suffix_list; do
+      case "$host" in
+        *".$suffix")
+          if [ -z "$matched_suffix" ] || [ "${#suffix}" -gt "${#matched_suffix}" ]; then
+            matched_suffix="$suffix"
           fi
+          ;;
+      esac
+    done
 
-          else
-            ext_domain=$(echo "$host" | awk -F. '{print $(NF-1)"."$NF}')
-            ext_hostname=$(echo "$host" | rev | cut -d. -f3- | rev)
-        fi
+    if [ -n "$matched_suffix" ]; then
+      prefix="${host%."$matched_suffix"}"
+      main_name="${prefix##*.}"
+
+      ext_domain="$main_name.$matched_suffix"
+
+      if [ "$host" = "$ext_domain" ]; then
+        ext_hostname=""
+      else
+        ext_hostname="${host%."$ext_domain"}"
+      fi
+
+    else
+      ext_domain=$(echo "$host" | awk -F. '{print $(NF-1)"."$NF}')
+      ext_hostname=$(echo "$host" | rev | cut -d. -f3- | rev)
     fi
-    _debug "ext_hostname:$ext_hostname"
-    _debug "ext_domain:$ext_domain"
+  fi
+  _debug "ext_hostname:$ext_hostname"
+  _debug "ext_domain:$ext_domain"
 }
 
 # Obtain the list of domain suffixes via API
