@@ -15,7 +15,7 @@ GNAME_TLDS_CACHE=""
 
 ########  Public functions #####################
 
-#Usage: add  _acme-challenge.www.domain.com   "T1rxqRBosdIK90xWCG3KLZNf6q_0HG9i01zxXp5CAS2"
+#Usage: add  _acme-challenge.www.domain.com   "T1rxqRBosdIK90xWCG3KLZNf6q_0HG9i01zxXp5CAS3"
 dns_gname_add() {
   fulldomain=$1
   txtvalue=$(printf "%s" "$2" | _url_encode)
