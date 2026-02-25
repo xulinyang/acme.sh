@@ -212,11 +212,11 @@ _extract_domain() {
     matched_suffix=""
     for suffix in $suffix_list; do
       case "$host" in
-        *".$suffix")
-          if [ -z "$matched_suffix" ] || [ "${#suffix}" -gt "${#matched_suffix}" ]; then
-            matched_suffix="$suffix"
-          fi
-          ;;
+      *".$suffix")
+        if [ -z "$matched_suffix" ] || [ "${#suffix}" -gt "${#matched_suffix}" ]; then
+          matched_suffix="$suffix"
+        fi
+        ;;
       esac
     done
 
