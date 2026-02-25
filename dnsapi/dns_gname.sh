@@ -135,8 +135,8 @@ _get_record_id() {
   jxz_feature=$(printf "%s" "$target_jxz" | cut -c 1-10)
 
   _debug "Searching with host: $target_zjt and feature: $jxz_feature"
-
-  matched_row=$(echo "$records" | grep "\"zjt\":\"$target_zjt\"" | grep "\"jxz\":\"$jxz_feature")
+  
+  matched_row=$(echo "$records" | grep -i "\"zjt\":\"$target_zjt\"" | grep "\"jxz\":\"$jxz_feature")
 
   _debug "Final Matched Row: $matched_row"
 
