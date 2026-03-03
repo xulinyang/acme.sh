@@ -142,8 +142,7 @@ _get_record_id() {
         break
       fi
     fi
-
-  done << EOF
+  done <<EOF
     $matched_rows
 EOF
 
