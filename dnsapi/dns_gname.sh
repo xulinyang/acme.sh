@@ -142,8 +142,9 @@ _get_record_id() {
         break
       fi
     fi
-  done << EOF
-$matched_rows
+
+    done <<EOF
+    $matched_rows
 EOF
 
   if [ -n "$dns_record_id" ]; then
