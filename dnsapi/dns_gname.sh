@@ -143,7 +143,7 @@ _get_record_id() {
       fi
     fi
 
-    done <<EOF
+  done << EOF
     $matched_rows
 EOF
 
