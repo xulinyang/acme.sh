@@ -139,7 +139,7 @@ _get_record_id() {
     if [ "$row_jxz" = "$search_jxz" ]; then
       dns_record_id=$(echo "$row" | _egrep_o "\"id\":\"[^\"]*\"" | _head_n 1 | cut -d : -f 2 | tr -d '"')
       if [ -n "$dns_record_id" ]; then
-        break # 找到精确匹配，退出循环
+        break
       fi
     fi
   done << EOF
