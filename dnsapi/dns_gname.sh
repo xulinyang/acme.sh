@@ -106,7 +106,6 @@ dns_gname_rm() {
   return 0
 }
 
-
 # Find the DNS record ID by hostname, record type, and record value.
 _get_record_id() {
   target_ym="$1"
@@ -143,7 +142,7 @@ _get_record_id() {
         break # 找到精确匹配，退出循环
       fi
     fi
-  done <<EOF
+  done << EOF
 $matched_rows
 EOF
 
