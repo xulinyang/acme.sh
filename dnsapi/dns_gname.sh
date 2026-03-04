@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2034
 dns_gname_info='GNAME
-Site: gname.com
+Site: www.gname.com
 Docs: github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_gname
 Options:
  GNAME_APPID Your APPID
@@ -9,7 +9,7 @@ Options:
 OptionsAlt:
 '
 
-GNAME_TLD_Api="https://gname.com/request/tlds?lx=all"
+GNAME_TLD_Api="https://www.gname.com/request/tlds?lx=all"
 GNAME_Api="https://api.gname.com"
 GNAME_TLDS_CACHE=""
 
@@ -27,7 +27,7 @@ dns_gname_add() {
     GNAME_APPID=""
     GNAME_APPKEY=""
     _err "You have not configured the APPID and APPKEY for the GNAME API."
-    _err "You can get yours from here https://gname.com/domain/api."
+    _err "You can get yours from here https://www.gname.com/domain/api."
     return 1
   fi
 
@@ -45,7 +45,7 @@ dns_gname_add() {
   final_hostname=$(printf "%s" "${ext_hostname:-@}" | _url_encode)
 
   # Parameters need to be sorted by key
-  body="appid=$GNAME_APPID&gntime=$gntime&jlz=$txtvalue&lang=us&lx=TXT&mx=0&ttl=600&xl=0&ym=$ext_domain&zj=$final_hostname"
+  body="appid=$GNAME_APPID&exist=1&gntime=$gntime&jlz=$txtvalue&lang=us&lx=TXT&mx=0&ttl=600&xl=0&ym=$ext_domain&zj=$final_hostname"
 
   _info "Adding TXT record for $ext_domain, host: $final_hostname"
 
@@ -70,7 +70,7 @@ dns_gname_rm() {
     GNAME_APPID=""
     GNAME_APPKEY=""
     _err "You have not configured the APPID and APPKEY for the GNAME API."
-    _err "You can get yours from here https://gname.com/domain/api."
+    _err "You can get yours from here https://www.gname.com/domain/api."
     return 1
   fi
 
