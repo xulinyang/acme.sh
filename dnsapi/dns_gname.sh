@@ -86,7 +86,7 @@ dns_gname_rm() {
 
   _debug "Query DNS record ID $ext_domain $final_hostname $txtvalue"
 
-  record_id=$(_get_record_id2 "$ext_domain" "$final_hostname" "$txtvalue")
+  record_id=$(_get_record_id "$ext_domain" "$final_hostname" "$txtvalue")
 
   if [ -z "$record_id" ]; then
     _info "DNS record not found, skip removing."
