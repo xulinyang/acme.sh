@@ -284,6 +284,6 @@ _gntoken() {
   data_to_sign="$1"
   full_data="${data_to_sign}${GNAME_APPKEY}"
   hash=$(printf "%s" "$full_data" | _digest md5 hex | tr -d ' ')
-  hash_upper=$(_upper_case "$hash")
+  hash_upper=$(echo "$hash" | _upper_case)
   printf "%s" "$hash_upper"
 }
