@@ -101,7 +101,7 @@ dns_gname_rm() {
   body="appid=$GNAME_APPID&gntime=$gntime&jxid=$record_id&lang=us&ym=$ext_domain"
 
   if ! _post_to_api "/api/resolution/delete" "$body"; then
-    _info "DNS record deletion failed"
+    _err "DNS record deletion failed"
     return 1
   fi
 
@@ -270,7 +270,13 @@ _get_suffixes_json() {
     return 1
   fi
 
-  if ! _contains "$response" "\"code\":1"; then
+  normalized_response="$(_normalizeJson "$response")"
+  if [ -z "$normalized_response" ]; then
+    _err "Failed to normalize JSON response for domain suffix list"
+    return 1
+  fi
+
+  if ! _contains "$normalized_response" "\"code\":1"; then
     _err "Failed to retrieve list of domain name suffixes; code is not 1"
     return 1
   fi
