@@ -6,6 +6,7 @@ Docs: github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_gname
 Options:
  GNAME_APPID Your APPID
  GNAME_APPKEY Your APPKEY
+ GNAME_TTL DNS resolution record TTL value, default 120.
 Issues: github.com/acmesh-official/acme.sh/issues/6874
 Author: GNDevProd <tech@gname.com>
 '
@@ -25,6 +26,8 @@ dns_gname_add() {
 
   GNAME_APPID="${GNAME_APPID:-$(_readaccountconf_mutable GNAME_APPID)}"
   GNAME_APPKEY="${GNAME_APPKEY:-$(_readaccountconf_mutable GNAME_APPKEY)}"
+  GNAME_TTL="${GNAME_TTL:-$(_readaccountconf_mutable GNAME_TTL)}"
+  GNAME_TTL="${GNAME_TTL:-120}"
 
   if [ -z "$GNAME_APPID" ] || [ -z "$GNAME_APPKEY" ]; then
     GNAME_APPID=""
@@ -36,6 +39,7 @@ dns_gname_add() {
 
   _saveaccountconf_mutable GNAME_APPID "$GNAME_APPID"
   _saveaccountconf_mutable GNAME_APPKEY "$GNAME_APPKEY"
+  _saveaccountconf_mutable GNAME_TTL "$GNAME_TTL"
 
   if ! _extract_domain "$fulldomain"; then
     _err "Failed to extract domain. Please check your network or API response."
@@ -48,7 +52,7 @@ dns_gname_add() {
   final_hostname=$(printf "%s" "${ext_hostname:-@}" | _url_encode)
 
   # Parameters need to be sorted by key
-  body="appid=$GNAME_APPID&exist=1&gntime=$gntime&jlz=$txtvalue&lang=us&lx=TXT&mx=0&ttl=600&xl=0&ym=$ext_domain&zj=$final_hostname"
+  body="appid=$GNAME_APPID&exist=1&gntime=$gntime&jlz=$txtvalue&lang=us&lx=TXT&mx=0&ttl=$GNAME_TTL&xl=0&ym=$ext_domain&zj=$final_hostname"
 
   _info "Adding TXT record for $ext_domain, host: $final_hostname"
 
