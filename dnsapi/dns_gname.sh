@@ -138,18 +138,11 @@ _get_record_id() {
     return 0
   fi
 
+  exact_row=$(echo "$matched_rows" | grep -F "\"jxz\":\"$target_jxz\"" | _head_n 1)
   dns_record_id=""
-  while IFS= read -r row; do
-    row_jxz=$(echo "$row" | sed 's/.*"jxz":"\([^"]*\)".*/\1/')
-    if [ "$row_jxz" = "$target_jxz" ]; then
-      dns_record_id=$(echo "$row" | _egrep_o "\"id\":\"[^\"]*\"" | _head_n 1 | cut -d : -f 2 | tr -d '"')
-      if [ -n "$dns_record_id" ]; then
-        break
-      fi
-    fi
-  done <<EOF
-    $matched_rows
-EOF
+  if [ -n "$exact_row" ]; then
+    dns_record_id=$(echo "$exact_row" | _egrep_o "\"id\":\"[^\"]*\"" | _head_n 1 | cut -d : -f 2 | tr -d '"')
+  fi
 
   if [ -n "$dns_record_id" ]; then
     _debug "Successfully found exact record ID: $dns_record_id"
@@ -172,7 +165,7 @@ _post_to_api() {
 
   http_err_code=$?
   if [ "$http_err_code" != "0" ]; then
-    _err "POST API $url curl error:$http_err_code"
+    _err "POST API $url request failed:$http_err_code"
     return 1
   fi
 
@@ -264,6 +257,7 @@ _extract_domain() {
   fi
   _debug "ext_hostname:$ext_hostname"
   _debug "ext_domain:$ext_domain"
+  return 0
 }
 
 # Obtain the list of domain suffixes via API
